@@ -1,0 +1,89 @@
+---
+title: "DSC 630 - Week 1"
+output:
+  html_document:
+    df_print: paged
+---
+Import the data and create a summary of two of the fields and save the csv to my local
+```{r}
+df <- read.csv("C:/Users/myers/Documents/630Data/10.csv")
+sel_df_cols = df[c("month1_emplvl","total_qtrly_wages")]
+summary(sel_df_cols)
+write.csv(sel_df_cols, "C:/Users/myers/Documents/630Data/630Week1CSV.csv")
+```
+Plot of wages against the month's employment level
+```{r}
+plot(sel_df_cols$month1_emplvl, sel_df_cols$total_qtrly_wages, type = "h", main = "Total Quarter wages v Employment Level", xlab = "Employment level per industry", ylab = "Wage total")
+
+```
+Plot of average weekly wage v the monthly employment level
+```{r}
+plot(df$lq_month1_emplvl, df$lq_avg_wkly_wage, main = "Average Weekly Wage v Monthly Employment Level",
+     xlab = "Monthly employment level", ylab = "Average weekly wage")
+```
+Pearson Correlation calculation of two month1_emplvl and total_qtrly_wages
+
+```{r}
+cor(sel_df_cols$month1_emplvl, sel_df_cols$total_qtrly_wages, method = "pearson")
+
+```
+
+Scatterplot of the two selected features which gives a visual representation of how interdependent the
+two variables are using the pearson method
+```{r}
+library("ggpubr")
+ggscatter(df, x = "month1_emplvl", y = "total_qtrly_wages", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "Monthly employment level", ylab = "Average weekly wage")
+
+```
+Scatterplot of the two selected features which gives a visual representation of how interdependent the
+two variables are using the spearman method.
+```{r}
+library("ggpubr")
+ggscatter(df, x = "month1_emplvl", y = "total_qtrly_wages", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Monthly employment level", ylab = "Average weekly wage")
+
+```
+Find the correlation coefficient
+```{r}
+cor(df$month1_emplvl, df$total_qtrly_wages)
+```
+Create a summary of every variable for the structure and data type
+```{r}
+str(df)
+
+```
+
+Results Discussion
+-----------------
+The dataset that I choose for this assignment was a breakdown of all the different industries tracked by the Bureau of Labor Statistics and how well they have done in terms of employment numbers and wages during the third quarter of 2020.
+
+In my first chart, I have created a histogram that looks at each industry's wage levels over the month of July in 2020. I feel that this chart was a good way to look at how each industry was doing overall for the month. One of the things that really sticks out is the large disparity between the high earners and the lower earners. My main conclusion from this is that it reflects how hard the service industries and support industries were hurt during the start of the COVID-19 pandemic.
+
+The second chart that I created gave more insight into how industries are doing across the board in terms of how much they can pay each employee and how many employees they are able to retain.
+
+In the third chart, I started looking at correlation of variables. Prior to writing the code for the correlation plot, I knew that month1_emplvl and total_qtrly_wages would be related during the pandemic because companies had their revenue levels squeezed so heavily. I was just curious to see how strong that relationship was. I was definitely surprised to see that the relationship was incredibly strong as was observed by how close the linear fit was. I repeated this same process by using both the pearson and spearman tests. 
+
+Both of these charts did a great job showing that these were strongly correlated, but to confirm this, I made use of the cor() method and found that the resulting correlation coefficient was .99, which is incredibly high.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
